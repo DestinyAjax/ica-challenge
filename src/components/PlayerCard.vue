@@ -1,8 +1,8 @@
 <template>
   <div id="player-card">
     <img src="images/pix.jpg" />
-    <div class="name"><p>Mark Williams</p></div>
-    <div class="score"><p>50.6</p></div>
+    <div class="name"><p>{{name}}</p></div>
+    <div class="score"><p>{{score}}</p></div>
   </div>
 </template>
 
@@ -10,9 +10,9 @@
 export default {
   name: "PlayerCard",
   props: {
-    playerName: String,
-    playerImage: String,
-    playerScore: String
+    name: String,
+    image: String,
+    score: String
   }
 };
 </script>

@@ -11,11 +11,11 @@
               <span class="h3">LEADERBOARD</span>
             </div>
             <div class="body">
-              <player-card></player-card>
-              <player-card></player-card>
-              <player-card></player-card>
-              <player-card></player-card>
-              <player-card></player-card>
+              <player-card name="Mark William" score="50.4"></player-card>
+              <player-card name="Proper John" score="45.8"></player-card>
+              <player-card name="Fatima Ahmed" score="30.2"></player-card>
+              <player-card name="John Winner" score="25.7"></player-card>
+              <player-card name="Gift Okafor" score="18.4"></player-card>
             </div>
           </b-col>
           <b-col></b-col>
