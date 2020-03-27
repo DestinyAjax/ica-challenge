@@ -6,8 +6,12 @@
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav class="ml-auto">
                     <b-navbar-nav>
-                    <b-nav-item href="#">Register</b-nav-item>
-                    <b-nav-item href="#" disabled>Leaderboard</b-nav-item>
+                        <router-link to="/leaderboard">
+                            <span class="link">Leaderboard</span>
+                        </router-link>
+                        <router-link to="/register">
+                            <span class="link">Register</span>
+                        </router-link>
                     </b-navbar-nav>
                 </b-navbar-nav>
             </b-collapse>
@@ -22,7 +26,13 @@ export default {
 </script>
 
 <style scoped>
-    #top-nav {
+    #nav-collapse .link {
+        padding: 10px;
+        color: #c5c5c5;
+    }
 
+    #nav-collapse .link:hover {
+        text-decoration: none;
+        color: #3fe277;
     }
 </style>
