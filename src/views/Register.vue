@@ -15,7 +15,7 @@
                             <form @submit.prevent="handleSubmit">
                                 <div class="form-group">
                                     <label>Full Name</label>
-                                    <input class="form-control" v-model="fullName" type="text" autocomplete="off" name="fullName" placeholder="Enter your full name..." required />
+                                    <input class="form-control" v-model="name" type="text" autocomplete="off" name="fullName" placeholder="Enter your full name..." required />
                                 </div>
                                 <div class="form-group">
                                     <label>Email Address</label>
@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Telephone</label>
-                                    <input min="11" max="11" v-model="phone" class="form-control" type="text" name="phone" autocomplete="off" placeholder="Enter your phone number ..." required />
+                                    <input min="11" max="11" v-model="telephone" class="form-control" type="text" name="phone" autocomplete="off" placeholder="Enter your phone number ..." required />
                                 </div>
                                 <div class="form-group">
                                     <label>School</label>
@@ -31,21 +31,22 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Twitter Handle</label>
-                                    <input class="form-control" v-model="twitterUrl" type="url" name="twitter" autocomplete="off" placeholder="Ex. https://twitter.com/rebot" required />
+                                    <input class="form-control" v-model="twitter_url" type="url" name="twitter" autocomplete="off" placeholder="Ex. https://twitter.com/rebot" required />
                                 </div>
                                 <div class="form-group">
                                     <label>Challenge Link</label>
-                                    <input class="form-control" v-model="solutionUrl" type="url" name="challenge" autocomplete="off" placeholder="Please provide the link to your solution" required />
+                                    <input class="form-control" v-model="solution_url" type="url" name="challenge" autocomplete="off" placeholder="Please provide the link to your solution" required />
                                 </div>
                                 <div class="photoWrapper">
-                                    <img v-if="img === null" src="images/pix.jpg" />
-                                    <img v-else :src="img" />
+                                    <img v-if="imageUrl === null" src="../assets/images/avatar.jpg" />
+                                    <img v-else :src="imageUrl" />
                                     <div class="form-group">
-                                        <input class="uploader" type="file" required />
+                                        <input class="uploader" type="file" ref="image" accept="image/*" @change="handleFileUpload" required />
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="form-control btn btn-lg btn-success" disabled>Push Application</button>
+                                    <button v-if="processing" type="button" class="form-control btn btn-lg btn-success" disabled><i class="fa fa-spinner fa-spin"></i> please wait...</button>
+                                    <button v-else type="submit" class="form-control btn btn-lg btn-success" :disabled="buttonActive === true">Push Application</button>
                                 </div>
                             </form>
                         </div>
@@ -59,7 +60,7 @@
 </template>
 
 <script>
-// import firebase from "../firebase";
+import { storage, playersCollection } from "../firebase";
 import TopNavigation from "@/components/TopNavigation";
 
 export default {
@@ -69,37 +70,59 @@ export default {
   },
   data() {
     return {
-      img: null,
-      fullName: '',
+      imageUrl: null,
+      name: '',
       email: '',
-      phone: '',
+      telephone: '',
       school: '',
-      twitterUrl: '',
-      file: '',
-      solutionUrl: '',
-      processing: false
+      twitter_url: '',
+      image_url: '',
+      solution_url: '',
+      processing: false,
+      buttonActive: true
     }
   },
   methods: {
     async handleSubmit(e) {
         e.preventDefault();
-        // this.processing = true;
-        // try {
-        //     const result = await fb.playersCollection.add({
-        //         name: this.fullName,
-        //         email: this.email,
-        //         telephone: this.phone,
-        //         twitter_url: this.twitterUrl,
-        //         solution_url: this.solutionUrl,
-        //         school: this.school
-        //     });
-        //     this.$router.push("/leaderboard");
-        // }
-        // catch(err) {
-        //     console.log(err);
-        // }
+        this.processing = true;
+        try {
+            const file = await storage.ref(`images/${Date.now()}`).put(this.image_url);
+            const downloadURL = await file.ref.getDownloadURL();
+            if (downloadURL) {
+                await playersCollection.add({
+                    name: this.name,
+                    email: this.email,
+                    telephone: this.telephone,
+                    twitter_url: this.twitter_url,
+                    solution_url: this.solution_url,
+                    school: this.school,
+                    image_url: downloadURL,
+                    created_at: Date.now()
+                });
+                this.$router.push("/leaderboard");
+            }
+        }
+        catch(err) {
+            console.log(err);
+        }
+        finally {
+            this.processing = false;
+        }
     },
-    handleFileUpload() {}
+    handleFileUpload(e) {
+        const files = e.target.files;
+        if (files[0] !== undefined) {
+            const fr = new FileReader();
+            fr.readAsDataURL(files[0]);
+
+            fr.addEventListener("load", () => {
+                this.imageUrl = fr.result;
+                this.image_url = files[0];
+                this.buttonActive = false;
+            });
+        }
+    }
   }
 };
 </script>

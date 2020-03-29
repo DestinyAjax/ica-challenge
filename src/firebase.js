@@ -18,6 +18,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 const currentUser = auth.currentUser;
+const storage = firebase.storage();
 
 // const usersCollection = db.collection('users')
 const playersCollection = db.collection('players')
@@ -26,6 +27,7 @@ export {
     db,
     auth,
     currentUser,
+    storage,
     // usersCollection,
     playersCollection,
 }
