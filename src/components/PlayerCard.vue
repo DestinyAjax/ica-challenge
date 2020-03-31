@@ -26,8 +26,8 @@ export default {
     border-radius: 3px;
     display: flex;
     flex-direction: row;
-    align-items: center;
     margin-bottom: 10px;
+    align-content:stretch;
   }
 
   #player-card:hover {
@@ -60,6 +60,7 @@ export default {
   #player-card .score {
     text-align: right;
     padding: 10px;
+    flex: 3
   }
 
   #player-card .score p {
@@ -68,6 +69,6 @@ export default {
     font-size: 30px;
     line-height: 42px;
     color: #3fe277;
-    margin-left: 250px;
+    text-align: right;
   }
 </style>

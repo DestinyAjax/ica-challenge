@@ -107,6 +107,7 @@ export default {
   background-color: #1d1e20;
   padding: 30px;
   color: #fff;
+  text-align: center;
 }
 
 #leader .section .leaderboard .body {
