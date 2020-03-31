@@ -1,7 +1,7 @@
 <template>
     <transition name="slide">
     <div id="leader">
-        <top-navigation></top-navigation>
+      <top-navigation current="leaderboard"></top-navigation>
         <div class="section">
           <b-container>
             <div v-if="error" class="alert alert-danger">
@@ -98,14 +98,6 @@ export default {
 </script>
 
 <style>
-#leader {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
 #leader .section {
   margin-top: 50px;
   padding: 20px;

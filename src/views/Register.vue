@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
     <div id="register">
-        <top-navigation></top-navigation>
+        <top-navigation current="register"></top-navigation>
         <div class="section">
             <b-container>
                 <b-row>

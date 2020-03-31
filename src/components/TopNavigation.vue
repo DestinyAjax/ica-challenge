@@ -7,11 +7,17 @@
                 <b-navbar-nav class="ml-auto">
                     <b-navbar-nav>
                         <router-link to="/leaderboard">
-                            <span class="link">Leaderboard</span>
+                            <span :class="current === 'leaderboard' ? `link active` : `link`">Leaderboard</span>
                         </router-link>
                         <router-link to="/register">
-                            <span class="link">Register</span>
+                            <span :class="current === 'register' ? `link active` : `link`">Register</span>
                         </router-link>
+                        <router-link v-if="this.$route.path !== '/dashboard'" to="/dashboard">
+                            <span :class="current === 'admin' ? `link active` : `link`">Admin</span>
+                        </router-link>
+                        <button type="button" class="btn btn-sm" v-if="this.$route.path === '/dashboard'" @click="logout">
+                            <span :class="current === 'admin' ? `link active` : `link`">Logout</span>
+                        </button>
                     </b-navbar-nav>
                 </b-navbar-nav>
             </b-collapse>
@@ -20,8 +26,20 @@
 </template>
 
 <script>
+import { auth } from "../firebase";
+
 export default {
   name: "TopNavigation",
+  props: {
+    current: String,
+  },
+  methods: {
+    logout () {
+        auth.signOut().then(() => {
+            this.$router.replace("login");
+        });
+    }
+  }
 };
 </script>
 
@@ -32,6 +50,11 @@ export default {
     }
 
     #nav-collapse .link:hover {
+        text-decoration: none;
+        color: #3fe277;
+    }
+
+    #nav-collapse .active {
         text-decoration: none;
         color: #3fe277;
     }

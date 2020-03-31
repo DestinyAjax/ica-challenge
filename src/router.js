@@ -3,6 +3,7 @@ import Router from "vue-router";
 import firebase from "firebase";
 
 const LeaderBoard = () => import("@/views/LeaderBoard");
+const Dashboard = () => import("@/views/Dashboard");
 const Register = () => import("@/views/Register");
 const Login = () => import("@/views/Login");
 
@@ -23,7 +24,7 @@ const router = new Router({
         {
             path: "/dashboard",
             name: "Dashboard",
-            component: LeaderBoard,
+            component: Dashboard,
             meta: {
                 requiresAuth: true
             }
