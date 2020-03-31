@@ -5,7 +5,7 @@
             <div class="section">
                 <b-container>
                     <div v-if="error" class="alert alert-danger">{{ error }}</div>
-                    <div v-if="loading">
+                    <div v-if="loading" class="text-center">
                         <img src="../assets/images/loader.png" />
                     </div>
                     <b-row v-else>

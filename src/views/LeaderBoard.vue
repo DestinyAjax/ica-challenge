@@ -7,9 +7,9 @@
             <div v-if="error" class="alert alert-danger">
               {{ error }}
             </div>
-            <div v-if="loading">
-              <img src="../assets/images/loader.png" />
-            </div>
+            <div v-if="loading" class="text-center">
+                <img src="../assets/images/loader.png" />
+              </div>
             <b-row v-else>
               <b-col></b-col>
               <b-col cols="8" class="leaderboard">
