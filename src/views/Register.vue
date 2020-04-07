@@ -1,12 +1,11 @@
 <template>
-    <transition name="fade">
     <div id="register">
         <top-navigation current="register"></top-navigation>
         <div class="section">
-            <b-container>
-                <b-row>
-                <b-col></b-col>
-                    <b-col cols="8" class="form">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
+                    <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 form">
                         <div class="header">
                             <span class="h2">Register</span>
                             <p>Register to participate in the #7days code challenge</p>
@@ -34,13 +33,24 @@
                                     <input class="form-control" v-model="twitter_url" type="url" name="twitter" autocomplete="off" placeholder="Ex. https://twitter.com/rebot" required />
                                 </div>
                                 <div class="form-group">
+                                    <label>Track</label>
+                                    <select class="form-control" v-model="track" name="track" required>
+                                        <option value="">--select your track --</option>
+                                        <option value="Web Development">Web Development</option>
+                                        <option value="UI/UX Design">UI/UX Design</option>
+                                        <option value="Technical Writing">Technical Writing</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label>Challenge Link</label>
                                     <input class="form-control" v-model="solution_url" type="url" name="challenge" autocomplete="off" placeholder="Please provide the link to your solution" required />
                                 </div>
                                 <div class="photoWrapper">
-                                    <img v-if="imageUrl === null" src="../assets/images/avatar.jpg" />
-                                    <img v-else :src="imageUrl" />
-                                    <div class="form-group">
+                                    <div class="imgWrapper">
+                                        <img v-if="imageUrl === null" src="../assets/images/avatar.jpg" />
+                                        <img v-else :src="imageUrl" />
+                                    </div>
+                                    <div class="fileWrapper form-group">
                                         <input class="uploader" type="file" ref="image" accept="image/*" @change="handleFileUpload" required />
                                     </div>
                                 </div>
@@ -50,13 +60,12 @@
                                 </div>
                             </form>
                         </div>
-                    </b-col>
-                <b-col></b-col>
-                </b-row>
-            </b-container>
+                    </div>
+                    <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
+                </div>
+            </div>
         </div>
     </div>
-    </transition>
 </template>
 
 <script>
@@ -73,6 +82,7 @@ export default {
       imageUrl: null,
       name: '',
       email: '',
+      track: '',
       telephone: '',
       school: '',
       twitter_url: '',
@@ -127,83 +137,174 @@ export default {
 };
 </script>
 
-<style>
-#register .section {
-  margin-top: 50px;
-  padding: 20px;
+<style scoped>
+@media only screen and (min-width : 992px) {
+    #register .section {
+        margin-top: 50px;
+        padding: 20px;
+    }
+
+    #register .section .form .header {
+        background-color: #1d1e20;
+        padding: 30px;
+        color: #fff;
+        text-align: center;
+    }
+
+    #register .section .form .body {
+        background-color: #000000;
+        border: 1px solid #404040;
+        padding: 10px;
+    }
+
+    #register label {
+        color: #c5c5c5;
+    }
+
+    #register .section .form .body input, #register .section .form .body select {
+        height: 60px;
+        background-color: unset;
+        color: #c5c5c5;
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    #register .section .form .body input:focus {
+        border: 1px solid #F57C00;
+    }
+
+    #register .uploader {
+        margin-top: 15px;
+    }
+
+    #register .h2 {
+        font-family: Courier;
+        display: block;
+        text-transform: uppercase;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 25px;
+        line-height: 30px;
+        color: #ffffff;
+    }
+
+    #register p {
+        font-family: Courier;
+        font-style: normal;
+        line-height: 10px;
+    }
+
+    #register .photoWrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #404040;
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    #register button {
+        margin-top: 10px;
+        padding: 10px;
+        height: 50px;
+    }
+
+    #register img {
+        border: 8px solid #C5C5C5;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-radius: 50%;
+        width: 80px;
+        margin-right: 30px;
+    }
 }
 
-#register .section .form .header {
-  background-color: #1d1e20;
-  padding: 30px;
-  color: #fff;
-  text-align: center;
-}
+@media only screen and (max-width : 768px) {
+    #register .section {
+        margin-top: 50px;
+        padding: 20px;
+    }
 
-#register .section .form .body {
-  background-color: #000000;
-  border: 1px solid #404040;
-  padding: 10px;
-}
+    #register .section .form .header {
+        background-color: #1d1e20;
+        padding: 30px;
+        color: #fff;
+        text-align: center;
+    }
 
-#register label {
-    color: #c5c5c5;
-}
+    #register .section .form .body {
+        background-color: #000000;
+        border: 1px solid #404040;
+        padding: 10px;
+    }
 
-#register .section .form .body input {
-    height: 60px;
-    background-color: unset;
-    color: #c5c5c5;
-    font-size: 18px;
-    padding: 10px;
-}
+    #register label {
+        color: #c5c5c5;
+    }
 
-#register .section .form .body input:focus {
-    border: 1px solid #3fe277;
-}
+    #register .section .form .body input, #register .section .form .body select {
+        height: 40px;
+        background-color: unset;
+        color: #c5c5c5;
+        font-size: 14px;
+        padding: 10px;
+    }
 
-#register .uploader {
-    margin-top: 15px;
-}
+    #register .section .form .body input:focus {
+        border: 1px solid #F57C00;
+    }
 
-#register .h2 {
-  font-family: Courier;
-  display: block;
-  text-transform: uppercase;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 25px;
-  line-height: 30px;
-  color: #ffffff;
-}
+    #register .h2 {
+        font-family: Courier;
+        display: block;
+        text-transform: uppercase;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 25px;
+        color: #ffffff;
+    }
 
-#register p {
-  font-family: Courier;
-  font-style: normal;
-  line-height: 10px;
-}
+    #register p {
+        font-family: Courier;
+        font-style: normal;
+    }
 
-#register .photoWrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: #404040;
-    padding: 10px;
-    margin-top: 10px;
-}
+    #register .photoWrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #404040;
+        margin-top: 10px;
+        padding: 5px;
+    }
 
-#register button {
-    margin-top: 10px;
-    padding: 10px;
-    height: 50px;
-}
+    #register button {
+        margin-top: 10px;
+        padding: 10px;
+        height: 40px;
+        font-size: 14px;
+    }
 
-#register img {
-    border: 8px solid #C5C5C5;
-    box-sizing: border-box;
-    background-color: #fff;
-    border-radius: 50%;
-    width: 80px;
-    margin-right: 30px;
+    #register .photoWrapper .imgWrapper {
+        padding: 10px;
+        flex: 1;
+    }
+
+    #register .photoWrapper .fileWrapper {
+        flex: 5;
+    }
+
+    #register .photoWrapper .fileWrapper input[type='file'] {
+        display: block;
+    }
+
+    #register img {
+        border: 3px solid #C5C5C5;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-radius: 50%;
+        width: 40px;
+        margin-right: 30px;
+    }
 }
 </style>

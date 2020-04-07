@@ -1,5 +1,4 @@
 <template>
-    <transition name="fade">
         <div id="dashboard">
             <top-navigation current="admin"></top-navigation>
             <div class="section">
@@ -8,9 +7,9 @@
                     <div v-if="loading" class="text-center">
                         <img src="../assets/images/loader.png" />
                     </div>
-                    <b-row v-else>
-                        <b-col></b-col>
-                        <b-col cols="9" class="players">
+                    <div class="row" v-else>
+                        <div class="col-md-1 col-lg-1 col-sm-12 col-xs-12"></div>
+                        <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 players">
                             <div class="header">
                                 <span class="h2">All Players</span>
                                 <span class="h3">Here you have the list of all participating players.</span>
@@ -43,13 +42,12 @@
                                     <p class="mt-3">Current Page: {{ currentPage }}</p>
                                 </div>
                             </div>
-                        </b-col>
-                        <b-col></b-col>
-                    </b-row>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-12 col-xs-12"></div>
+                    </div>
                 </b-container>
             </div>
         </div>
-    </transition>
 </template>
 
 <script>

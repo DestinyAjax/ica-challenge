@@ -4,9 +4,9 @@
       <top-navigation current="admin"></top-navigation>
       <div class="section">
         <b-container>
-          <b-row>
-            <b-col></b-col>
-            <b-col cols="8" class="form">
+          <div class="row">
+            <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
+            <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 form">
               <div v-if="error" style="margn-bottom: 10px" class="alert alert-danger">
                 {{ error }}
               </div>
@@ -30,9 +30,9 @@
                   </div>
                 </form>
               </div>
-            </b-col>
-            <b-col></b-col>
-          </b-row>
+            </div>
+            <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
+          </div>
         </b-container>
       </div>
     </div>
@@ -79,47 +79,96 @@ export default {
 </script>
 
 <style scoped>
-#login .section {
-  margin-top: 50px;
-  padding: 20px;
+@media only screen and (min-width : 992px) {
+  #login .section {
+    margin-top: 50px;
+    padding: 20px;
+  }
+
+  #login .section .form .header {
+    background-color: #1d1e20;
+    padding: 30px;
+    color: #fff;
+    text-align: center;
+  }
+
+  #login .section .form .body {
+    background-color: #000000;
+    border: 1px solid #404040;
+    padding: 10px;
+  }
+
+  #login label {
+    color: #c5c5c5;
+  }
+
+  #login .section .form .body input {
+    height: 60px;
+    background-color: unset;
+    color: #c5c5c5;
+    font-size: 18px;
+    padding: 10px;
+  }
+
+  #login .section .form .body input:focus {
+    border: 1px solid #F57C00;
+  }
+
+  #login .section .form .body input:active {
+    background: unset;
+  }
+
+  #login button {
+    margin-top: 10px;
+    padding: 10px;
+    height: 50px;
+  }
 }
 
-#login .section .form .header {
-  background-color: #1d1e20;
-  padding: 30px;
-  color: #fff;
-  text-align: center;
-}
+@media only screen and (max-width : 768px) {
+  #login .section {
+    margin-top: 50px;
+    padding: 20px;
+  }
 
-#login .section .form .body {
-  background-color: #000000;
-  border: 1px solid #404040;
-  padding: 10px;
-}
+  #login .section .form .header {
+    background-color: #1d1e20;
+    padding: 30px;
+    color: #fff;
+    text-align: center;
+  }
 
-#login label {
-  color: #c5c5c5;
-}
+  #login .section .form .body {
+    background-color: #000000;
+    border: 1px solid #404040;
+    padding: 10px;
+  }
 
-#login .section .form .body input {
-  height: 60px;
-  background-color: unset;
-  color: #c5c5c5;
-  font-size: 18px;
-  padding: 10px;
-}
+  #login label {
+    color: #c5c5c5;
+  }
 
-#login .section .form .body input:focus {
-  border: 1px solid #3fe277;
-}
+  #login .section .form .body input {
+    height: 40px;
+    background-color: unset;
+    color: #c5c5c5;
+    font-size: 14px;
+    padding: 10px;
+  }
 
-#login .section .form .body input:active {
-  background: unset;
-}
+  #login .section .form .body input:focus {
+    border: 1px solid #F57C00;
+  }
 
-#login button {
-  margin-top: 10px;
-  padding: 10px;
-  height: 50px;
+  #login .section .form .body input:active {
+    background: unset;
+  }
+
+  #login button {
+    margin-top: 10px;
+    padding: 10px;
+    height: 40px;
+    font-size: 14px;
+  }
 }
 </style>

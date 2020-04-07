@@ -1,9 +1,15 @@
 <template>
   <div id="player-card">
-    <img v-if="image === ''" src="../assets/images/avatar.jpg" />
-    <img v-else :src="image" />
-    <div class="name"><p>{{ name }}</p></div>
-    <div class="score"><p>{{ score }}</p></div>
+    <span class="column column1">{{index}}</span>
+    <div class="column column2">
+      <img v-if="image === ''"  src="../assets/images/avatar.jpg" />
+      <img v-else :src="image" />
+    </div>
+    <span class="column column3">{{ name }}</span>
+    <span class="column column4">{{ score }}</span>
+    <div class="column column5">
+      <img src="../assets/images/group-1.png" />
+    </div>
   </div>
 </template>
 
@@ -13,62 +19,56 @@ export default {
   props: {
     name: String,
     image: String,
-    score: Number
+    score: Number,
+    index: Number
   }
 };
 </script>
 
 <style scoped>
   #player-card {
-    padding: 10px;
-    background-color: #404040;
-    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.25);
+    background-color: #E0E0E0;
     border-radius: 3px;
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
-    align-content:stretch;
+    align-items: center;
+  }
+
+  #player-card .column {
+    text-transform: uppercase; 
+    padding: 10px;
+  }
+
+  #player-card .column.column1 {
+    flex: 0.5
+  }
+
+  #player-card .column.column2 {
+    flex: 1;
+  }
+
+  #player-card .column.column2 img {
+    border: 3px solid #C5C5C5;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 50px;
+    text-align: left;
+  }
+
+  #player-card .column.column3 {
+    flex: 5
+  }
+
+  #player-card .column.column4 {
+    flex: 0.5
+  }
+
+  #player-card .column.column5 {
+    flex: 1
   }
 
   #player-card:hover {
     cursor: pointer;
-  }
-
-  #player-card img {
-    border: 8px solid #C5C5C5;
-    box-sizing: border-box;
-    background-color: #fff;
-    border-radius: 50%;
-    width: 80px;
-    margin-right: 30px;
-  }
-
-  #player-card .name {
-    padding: 10px;
-  }
-
-  #player-card .name p {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 23px;
-    line-height: 28px;
-    letter-spacing: 0.1em;
-    margin-top: 10px;
-    color: #C5C5C5;
-  }
-
-  #player-card .score {
-    text-align: right;
-    padding: 10px;
-    flex: 3
-  }
-
-  #player-card .score p {
-    font-style: normal;
-    font-weight: 900;
-    font-size: 30px;
-    line-height: 42px;
-    color: #3fe277;
-    text-align: right;
   }
 </style>
