@@ -46,13 +46,9 @@
                                     <input class="form-control" v-model="solution_url" type="url" name="challenge" autocomplete="off" placeholder="Please provide the link to your solution" required />
                                 </div>
                                 <div class="photoWrapper">
-                                    <div class="imgWrapper">
-                                        <img v-if="imageUrl === null" src="../assets/images/avatar.jpg" />
-                                        <img v-else :src="imageUrl" />
-                                    </div>
-                                    <div class="fileWrapper form-group">
-                                        <input class="uploader" type="file" ref="image" accept="image/*" @change="handleFileUpload" required />
-                                    </div>
+                                    <img v-if="imageUrl === null" src="../assets/images/avatar.jpg" />
+                                    <img v-else :src="imageUrl" />
+                                    <input class="uploader" type="file" ref="image" accept="image/*" @change="handleFileUpload" required />
                                 </div>
                                 <div class="form-group">
                                     <button v-if="processing" type="button" class="form-control btn btn-lg btn-success" disabled><i class="fa fa-spinner fa-spin"></i> please wait...</button>
@@ -272,7 +268,7 @@ export default {
     #register .photoWrapper {
         display: flex;
         flex-direction: row;
-        align-items: center;
+        align-items: left;
         background-color: #404040;
         margin-top: 10px;
         padding: 5px;
@@ -285,17 +281,16 @@ export default {
         font-size: 14px;
     }
 
-    #register .photoWrapper .imgWrapper {
-        padding: 10px;
-        flex: 1;
+    .uploader {
+        text-align: left;
     }
 
-    #register .photoWrapper .fileWrapper {
-        flex: 5;
+    .uploader:active {
+        border: 0;
     }
 
-    #register .photoWrapper .fileWrapper input[type='file'] {
-        display: block;
+    .uploader::-webkit-file-upload-button {
+        visibility: hidden;
     }
 
     #register img {
