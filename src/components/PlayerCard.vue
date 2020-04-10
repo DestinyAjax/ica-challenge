@@ -8,7 +8,7 @@
     <span class="column column3">{{ name }}</span>
     <span class="column column4">{{ score }}</span>
     <div class="column column5">
-      <img src="../assets/images/group-1.png" />
+      <img v-if="trophy !== ''" :src="trophy" />
     </div>
   </div>
 </template>
@@ -20,7 +20,8 @@ export default {
     name: String,
     image: String,
     score: Number,
-    index: Number
+    index: Number,
+    trophy: String
   }
 };
 </script>

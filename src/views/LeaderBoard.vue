@@ -12,34 +12,41 @@
             <div class="row" v-else>
               <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
               <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 leaderboard">
-                <div class="header">
-                  <h4>Leaderboard</h4>
-                  <div class="header-row">
-                    <a href="#" class="column column1">Rank</a>
-                    <a href="#" class="column column2"></a>
-                    <a href="#" class="column column3">Name</a>
-                    <a href="#" class="column column4">Score</a>
-                    <a href="#" class="column column5"></a>
-                  </div>
-                </div>
-                <div class="body">
-                  <div v-if="players.length > 0">
-                    <player-card v-for="(player,index) in players" 
-                      :name="player.name" 
-                      :score="player.score"
-                      :image="player.image"
-                      :index="++index"
-                      v-bind:key="index"
-                    />
-                  </div>
-                  <div class="no-value" v-else>
-                    <span><i class="fa fa-ban"></i></span>
-                    <p style="text-align: center">There are currently no players</p>
-                    <router-link to="/register">
-                      <button type="button" class="btn btn-sm">Register</button>
-                    </router-link>
-                  </div>
-                </div>
+                <h4>Leaderboard</h4>
+                <b-tabs content-class="" nav-class="nav-class" active-nav-item-class="nav-class" fill>
+                  <b-tab title="Web Development" active>
+                    <div class="header">
+                      <div class="header-row">
+                        <a href="#" class="column column1">Rank</a>
+                        <a href="#" class="column column2"></a>
+                        <a href="#" class="column column3">Name</a>
+                        <a href="#" class="column column4">Score</a>
+                        <a href="#" class="column column5"></a>
+                      </div>
+                    </div>
+                    <div class="body">
+                      <div v-if="players.length > 0">
+                        <player-card v-for="(player,index) in players" 
+                          :name="player.name" 
+                          :score="player.score"
+                          :image="player.image"
+                          :index="++index"
+                          :trophy="`${player.trophy}`"
+                          v-bind:key="index"
+                        />
+                      </div>
+                      <div class="no-value" v-else>
+                        <span><i class="fa fa-ban"></i></span>
+                        <p style="text-align: center">There are currently no players</p>
+                        <router-link to="/register">
+                          <button type="button" class="btn btn-sm">Register</button>
+                        </router-link>
+                      </div>
+                    </div>
+                  </b-tab>
+                  <b-tab title="UI/UX Design" class="tab-item"></b-tab>
+                  <b-tab title="Technical Writing" class="tab-item"></b-tab>
+                </b-tabs>
               </div>
               <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
             </div>
@@ -66,26 +73,31 @@ export default {
           name: 'Destiny Ajax',
           score: 12,
           image: '',
+          trophy: '/images/gold.png'
         },
         {
           name: 'Tito Akanbi',
           score: 12,
           image: '',
+          trophy: '/images/silver.png'
         },
         {
           name: 'Abdul Musa',
           score: 18,
           image: '',
+          trophy: '/images/bronze.png'
         },
         {
           name: 'John Doe',
           score: 12,
           image: '',
+          trophy: ''
         },
         {
           name: 'Adeniran Opeyemi',
           score: 12,
           image: '',
+          trophy: ''
         }
       ],
       loading: false,
@@ -140,8 +152,20 @@ export default {
   text-align: left;
 } 
 
-#leader .section .leaderboard .header h4 {
+.nav-class {
+  background-color: #1b1c21;
+  color: #fff;
+}
+
+.active-tab {
+  background: #f57c00;
+  color: #fff;
+}
+
+#leader .section .leaderboard h4 {
   font-size: 30px;
+  margin-bottom: 20px;
+  color: #fff;
 }
 
 #leader .section .leaderboard .header .header-row {
@@ -187,7 +211,6 @@ export default {
 }
 
 #leader .h2 {
-  font-family: Lato;
   display: block;
   font-style: normal;
   font-weight: bold;
@@ -197,7 +220,6 @@ export default {
 }
 
 #leader .h3 {
-  font-family: Courier;
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
@@ -292,7 +314,6 @@ export default {
 }
 
   #leader .h2 {
-    font-family: Lato;
     display: block;
     font-style: normal;
     font-weight: bold;
@@ -302,7 +323,6 @@ export default {
   }
 
   #leader .h3 {
-    font-family: Courier;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;

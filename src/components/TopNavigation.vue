@@ -1,22 +1,22 @@
 <template>
     <div id="top-nav">
-        <b-navbar toggleable="lg" type="dark" variant="dark">
+        <b-navbar toggleable="lg" style="background-color: #1B1C21">
             <div class="container">
-                <b-navbar-brand href="#">
+                <b-navbar-brand href="/leaderboard">
                     <img src="/images/logo.png" alt="" />
                 </b-navbar-brand>
-                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+                <b-navbar-toggle target="nav-collapse" class="toggle"></b-navbar-toggle>
                 <b-collapse id="nav-collapse" is-nav>
                     <b-navbar-nav class="ml-auto">
                         <b-navbar-nav>
                             <router-link to="/leaderboard">
                                 <span :class="current === 'leaderboard' ? `link active` : `link`">Leaderboard</span>
                             </router-link>
-                            <router-link to="/register">
-                                <span :class="current === 'register' ? `link active` : `link`">Register</span>
+                            <router-link to="/submission">
+                                <span :class="current === 'submission' ? `link active` : `link`">Submission</span>
                             </router-link>
-                            <router-link v-if="this.$route.path !== '/dashboard'" to="/dashboard">
-                                <span :class="current === 'admin' ? `link active` : `link`">Admin</span>
+                            <router-link to="/register">
+                                <button type="button" class="btn register">Register</button>
                             </router-link>
                             <button type="button" class="btn btn-sm" v-if="this.$route.path === '/dashboard'" @click="logout">
                                 <span :class="current === 'admin' ? `link active` : `link`">Logout</span>
@@ -53,6 +53,7 @@ export default {
         padding: 10px;
         color: #c5c5c5;
         margin-left: 20px;
+        display: inline-block;
     }
 
     #nav-collapse .link:hover {
@@ -63,9 +64,16 @@ export default {
 
     #nav-collapse .active {
         text-decoration: none;
+        padding: 10px;
+        color: #F57C00;
+    }
+
+    #nav-collapse .register {
         background-color: #F57C00;
         padding: 10px;
         color: #fff;
+        margin-left: 30px;
+        width: 150px
     }
 }
 
@@ -80,14 +88,29 @@ export default {
 
     #nav-collapse .link:hover {
         text-decoration: none;
+        text-decoration-color: none;
+        display: block;
+        text-align: center;
         color: #fff;
     }
 
     #nav-collapse .active {
         text-decoration: none;
+        padding: 10px;
+        color: #F57C00;
+    }
+
+    #nav-collapse .register {
         background-color: #F57C00;
         padding: 10px;
         color: #fff;
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .toggle {
+        background-color: #fff !important;
     }
 }
 </style>

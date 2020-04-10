@@ -9,7 +9,7 @@
                     </div>
                     <div class="row" v-else>
                         <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
-                            <side-menu active_page="dashboard" />
+                            <side-menu></side-menu>
                         </div>
                         <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 players">
                             <div class="header">
@@ -20,16 +20,28 @@
                                 <div class="overflow-auto">
                                     <b-table
                                         id="my-table"
-                                        :items="tracks"
+                                        :items="items"
+                                        :per-page="perPage"
+                                        :current-page="currentPage"
                                         small
                                         class="custom-table"
                                         striped 
                                         responsive="sm"
                                     >
                                         <template v-slot:cell(details)>
-                                            <router-link to="#" size="sm" class="mr-2">View Students</router-link>
+                                            <router-link to="#" size="sm" class="mr-2">View Details</router-link>
                                         </template>
                                     </b-table>
+                                    <b-pagination
+                                        v-model="currentPage"
+                                        :total-rows="rows"
+                                        :per-page="perPage"
+                                        aria-controls="my-table"
+                                        pills
+                                        align="center"
+                                    ></b-pagination>
+
+                                    <p class="mt-3">Current Page: {{ currentPage }}</p>
                                 </div>
                             </div>
                         </div>
@@ -43,6 +55,7 @@
 import TopNavigation from "@/components/TopNavigation";
 import SideMenu from "@/components/SideMenu";
 import { allTracks } from "@/services/TrackService";
+import { playersCollection } from "../firebase";
 
 export default {
     name: "dashboard",
@@ -52,10 +65,18 @@ export default {
     },
     data() {
         return {
+            perPage: 5,
+            currentPage: 1,
             loading: false,
             error: null,
+            items: [],
             tracks: []
         }
+    },
+    computed: {
+      rows() {
+        return this.items.length
+      }
     },
     created() {
         this.fetchData();
@@ -67,14 +88,7 @@ export default {
                 this.tracks = [];
                 const {data} = await allTracks();
                 if (data.data.length > 0) {
-                    data.data.map((record,index) => {
-                        this.tracks.push({
-                            id: ++index,
-                            name: record.name,
-                            description: record.description,
-                            details: ''
-                        });
-                    });
+                    this.tracks = data.data;
                 }
             }
             catch (err) {

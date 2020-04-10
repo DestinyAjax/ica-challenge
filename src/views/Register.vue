@@ -8,51 +8,49 @@
                     <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 form">
                         <div class="header">
                             <span class="h2">Register</span>
-                            <p>Register to participate in the #7days code challenge</p>
+                            <p>Fill the form below to participate in the #7days code challenge</p>
                         </div>
                         <div class="body">
                             <form @submit.prevent="handleSubmit">
                                 <div class="form-group">
-                                    <label>Full Name</label>
+                                    <label>Full Name <span class="req">*</span></label>
                                     <input class="form-control" v-model="name" type="text" autocomplete="off" name="fullName" placeholder="Enter your full name..." required />
                                 </div>
                                 <div class="form-group">
-                                    <label>Email Address</label>
+                                    <label>Email Address <span class="req">*</span></label>
                                     <input class="form-control" v-model="email" type="email" autocomplete="off" name="emailAddress" placeholder="Enter your email ..." required />
                                 </div>
                                 <div class="form-group">
-                                    <label>Telephone</label>
+                                    <label>Telephone <span class="req">*</span></label>
                                     <input min="11" max="11" v-model="telephone" class="form-control" type="text" name="phone" autocomplete="off" placeholder="Enter your phone number ..." required />
                                 </div>
                                 <div class="form-group">
-                                    <label>School</label>
+                                    <label>School <span class="req">*</span></label>
                                     <input class="form-control" v-model="school" type="text" name="school" autocomplete="off" placeholder="Tell us the name of your school ..." required />
                                 </div>
                                 <div class="form-group">
-                                    <label>Twitter Handle</label>
+                                    <label>Twitter Handle <span class="req">*</span></label>
                                     <input class="form-control" v-model="twitter_url" type="url" name="twitter" autocomplete="off" placeholder="Ex. https://twitter.com/rebot" required />
                                 </div>
                                 <div class="form-group">
-                                    <label>Track</label>
+                                    <label>Track <span class="req">*</span></label>
                                     <select class="form-control" v-model="track" name="track" required>
                                         <option value="">--select your track --</option>
-                                        <option value="Web Development">Web Development</option>
-                                        <option value="UI/UX Design">UI/UX Design</option>
-                                        <option value="Technical Writing">Technical Writing</option>
+                                        <option v-for="(track,index) in tracks" v-bind:key="index" :value="track.id">{{track.name}}</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label>Challenge Link</label>
-                                    <input class="form-control" v-model="solution_url" type="url" name="challenge" autocomplete="off" placeholder="Please provide the link to your solution" required />
-                                </div>
                                 <div class="photoWrapper">
-                                    <img v-if="imageUrl === null" src="../assets/images/avatar.jpg" />
-                                    <img v-else :src="imageUrl" />
-                                    <input class="uploader" type="file" ref="image" accept="image/*" @change="handleFileUpload" required />
+                                    <div>
+                                        <img v-if="imageUrl === null" src="../assets/images/avatar.jpg" />
+                                        <img v-else :src="imageUrl" />
+                                    </div>
+                                    <div>
+                                        <input class="uploader" type="file" ref="image" accept="image/*" @change="handleFileUpload" required />
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <button v-if="processing" type="button" class="form-control btn btn-lg btn-success" disabled><i class="fa fa-spinner fa-spin"></i> please wait...</button>
-                                    <button v-else type="submit" class="form-control btn btn-lg btn-success" :disabled="buttonActive === true">Push Application</button>
+                                    <button v-else type="submit" class="form-control btn btn-lg btn-success" :disabled="buttonActive === true">Register</button>
                                 </div>
                             </form>
                         </div>
@@ -65,8 +63,10 @@
 </template>
 
 <script>
-import { storage, playersCollection } from "../firebase";
+import { createPlayer } from "@/services/PlayerService";
+import { allTracks } from "@/services/TrackService";
 import TopNavigation from "@/components/TopNavigation";
+import { toBase64 } from "@/helpers/utils";
 
 export default {
   name: "register",
@@ -84,49 +84,58 @@ export default {
       twitter_url: '',
       image_url: '',
       solution_url: '',
+      tracks: [],
       processing: false,
       buttonActive: true
     }
+  },
+  created() {
+    this.getTracks();
   },
   methods: {
     async handleSubmit(e) {
         e.preventDefault();
         this.processing = true;
         try {
-            const file = await storage.ref(`images/${Date.now()}`).put(this.image_url);
-            const downloadURL = await file.ref.getDownloadURL();
-            if (downloadURL) {
-                await playersCollection.add({
-                    name: this.name,
-                    email: this.email,
-                    telephone: this.telephone,
-                    twitter_url: this.twitter_url,
-                    solution_url: this.solution_url,
-                    school: this.school,
-                    image_url: downloadURL,
-                    created_at: Date.now()
-                });
-                this.$router.push("/leaderboard");
-            }
+            await createPlayer({
+                name: this.name,
+                email: this.email,
+                telephone: this.telephone,
+                twitter_url: this.twitter_url,
+                school: this.school,
+                image_url: this.image_url,
+                track_id: this.track,
+            });
+            this.$swal('Created Successfully!','Your profile has been successfully created','success');
+            window.location.reload();
         }
-        catch(err) {
-            console.log(err);
+        catch({response: {data}}) {
+            this.$swal('Something went wrong',`${data.message}`,'error');
         }
         finally {
             this.processing = false;
         }
     },
-    handleFileUpload(e) {
+    async handleFileUpload(e) {
         const files = e.target.files;
         if (files[0] !== undefined) {
             const fr = new FileReader();
             fr.readAsDataURL(files[0]);
-
-            fr.addEventListener("load", () => {
+            fr.addEventListener("load", async () => {
                 this.imageUrl = fr.result;
-                this.image_url = files[0];
+                this.image_url = await toBase64(files[0]);
+                console.log(this.image_url);
                 this.buttonActive = false;
             });
+        }
+    },
+    async getTracks() {
+        try {
+            const {data} = await allTracks();
+            this.tracks = data.data;
+        }
+        catch (err) {
+            console.log(err);
         }
     }
   }
@@ -141,16 +150,14 @@ export default {
     }
 
     #register .section .form .header {
-        background-color: #1d1e20;
-        padding: 30px;
         color: #fff;
-        text-align: center;
+        text-align: left;
+        margin-bottom: 30px;
     }
 
     #register .section .form .body {
-        background-color: #000000;
-        border: 1px solid #404040;
-        padding: 10px;
+        background-color: #1B1C21;
+        padding: 50px;
     }
 
     #register label {
@@ -158,23 +165,25 @@ export default {
     }
 
     #register .section .form .body input, #register .section .form .body select {
-        height: 60px;
-        background-color: unset;
-        color: #c5c5c5;
-        font-size: 18px;
+        height: 40px;
+        background-color: #222328;
+        color: #5A6872;
+        font-size: 16px;
         padding: 10px;
+        border-radius: 0;
+        border: 1px solid #2C363E;
     }
 
-    #register .section .form .body input:focus {
+    #register .section .form .body input[type="file"] {
+        background-color: unset;
+        border: 0;
+    }
+
+    #register .section .form .body input:focus, #register .section .form .body select:focus {
         border: 1px solid #F57C00;
     }
 
-    #register .uploader {
-        margin-top: 15px;
-    }
-
     #register .h2 {
-        font-family: Courier;
         display: block;
         text-transform: uppercase;
         font-style: normal;
@@ -185,9 +194,9 @@ export default {
     }
 
     #register p {
-        font-family: Courier;
         font-style: normal;
         line-height: 10px;
+        font-size: 18px;
     }
 
     #register .photoWrapper {
@@ -203,6 +212,11 @@ export default {
         margin-top: 10px;
         padding: 10px;
         height: 50px;
+        background: #F57C00;
+        border-radius: 0;
+        color: #fff;
+        text-align: left;
+        border: 0;
     }
 
     #register img {
@@ -222,16 +236,14 @@ export default {
     }
 
     #register .section .form .header {
-        background-color: #1d1e20;
-        padding: 30px;
         color: #fff;
-        text-align: center;
+        text-align: left;
+        margin-bottom: 30px;
     }
 
     #register .section .form .body {
-        background-color: #000000;
-        border: 1px solid #404040;
-        padding: 10px;
+        background-color: #1B1C21;
+        padding: 30px;
     }
 
     #register label {
@@ -240,18 +252,19 @@ export default {
 
     #register .section .form .body input, #register .section .form .body select {
         height: 40px;
-        background-color: unset;
-        color: #c5c5c5;
-        font-size: 14px;
+        background-color: #222328;
+        color: #5A6872;
+        font-size: 16px;
         padding: 10px;
+        border-radius: 0;
+        border: 1px solid #2C363E;
     }
 
-    #register .section .form .body input:focus {
+    #register .section .form .body input:focus, #register .section .form .body select:focus {
         border: 1px solid #F57C00;
     }
 
     #register .h2 {
-        font-family: Courier;
         display: block;
         text-transform: uppercase;
         font-style: normal;
@@ -261,36 +274,37 @@ export default {
     }
 
     #register p {
-        font-family: Courier;
         font-style: normal;
     }
 
     #register .photoWrapper {
         display: flex;
-        flex-direction: row;
-        align-items: left;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         background-color: #404040;
         margin-top: 10px;
-        padding: 5px;
+        padding: 10px;
     }
 
     #register button {
         margin-top: 10px;
         padding: 10px;
-        height: 40px;
-        font-size: 14px;
+        height: 50px;
+        background: #F57C00;
+        border-radius: 0;
+        color: #fff;
+        text-align: left;
+        border: 0;
     }
 
-    .uploader {
-        text-align: left;
+    #register .uploader {
+        background-color: unset;
+        margin-top: 10px;
     }
 
     .uploader:active {
         border: 0;
-    }
-
-    .uploader::-webkit-file-upload-button {
-        visibility: hidden;
     }
 
     #register img {

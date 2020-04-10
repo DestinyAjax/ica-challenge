@@ -6,6 +6,8 @@ const LeaderBoard = () => import("@/views/LeaderBoard");
 const Dashboard = () => import("@/views/Dashboard");
 const Register = () => import("@/views/Register");
 const Login = () => import("@/views/Login");
+const Submission = () => import("@/views/Submission");
+const Challenge = () => import("@/views/Challenges");
 
 Vue.use(Router);
 
@@ -30,6 +32,14 @@ const router = new Router({
             }
         },
         {
+            path: "/challenges",
+            name: "Challenge",
+            component: Challenge,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
             path: "/register",
             name: "Register",
             component: Register
@@ -39,6 +49,11 @@ const router = new Router({
             name: "Login",
             component: Login
         },
+        {
+            path: "/submission",
+            name: "Submission",
+            component: Submission
+        }
     ]
 });
 
