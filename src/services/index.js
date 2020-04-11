@@ -1,9 +1,9 @@
 import axios from 'axios';
 export const baseURL = process.env.NODE_ENV === 'production' ? 
-  'http://ica-web-api.herokuapp.com/api/v1/' : 'http://ica-web-api.herokuapp.com/api/v1/';
+  'https://ica-web-api.herokuapp.com/api/v1/' : 'http://ica-web-api.herokuapp.com/api/v1/';
 
 export const URL = process.env.NODE_ENV === 'production' ? 
-  'http://ica-web-api.herokuapp.com/' : 'http://ica-web-api.herokuapp.com/';
+  'https://ica-web-api.herokuapp.com/' : 'http://ica-web-api.herokuapp.com/';
 
 const getFunc = (path) => {
     return new Promise((resolve, reject) => {
