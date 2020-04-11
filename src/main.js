@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Axios from "axios";
 import VueSweetalert2 from "vue-sweetalert2";
+import VueLodash from "vue-lodash";
+import lodash from "lodash";
 import router from "./router";
 import App from "./App";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
@@ -17,6 +19,7 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(VueSweetalert2);
+Vue.use(VueLodash, { lodash: lodash });
 
 Vue.prototype.$http = Axios;
 
