@@ -11,22 +11,22 @@
                 {{ error }}
               </div>
               <div class="header">
-                <span class="h2">Login</span>
+                <span class="h2">Admin Login</span>
                 <p>Login if you have the right authentication details</p>
               </div>
               <div class="body">
                 <form @submit.prevent="handleSubmit">
                   <div class="form-group">
-                    <label>Email</label>
+                    <label>Email Address <span class="req">*</span></label>
                     <input class="form-control" v-model="email" type="email" autocomplete="off" name="emailAdd" placeholder="Email address" required />
                   </div>
                   <div class="form-group">
-                    <label>Password</label>
+                    <label>Password <span class="req">*</span></label>
                     <input class="form-control" v-model="password" type="password" autocomplete="off" name="passWord" placeholder="Password" required />
                   </div>
                   <div class="form-group">
                     <button v-if="processing" type="button" class="form-control btn btn-lg btn-success" disabled><i class="fa fa-spinner fa-spin"></i> Opening ...</button>
-                    <button v-else type="submit" class="form-control btn btn-lg btn-success">Get Me In</button>
+                    <button v-else type="submit" class="form-control btn btn-lg btn-success">Login</button>
                   </div>
                 </form>
               </div>
@@ -86,16 +86,14 @@ export default {
   }
 
   #login .section .form .header {
-    background-color: #1d1e20;
-    padding: 30px;
     color: #fff;
-    text-align: center;
+    text-align: left;
+    margin-bottom: 30px;
   }
 
   #login .section .form .body {
-    background-color: #000000;
-    border: 1px solid #404040;
-    padding: 10px;
+    background-color: #1b1c21;
+    padding: 50px;
   }
 
   #login label {
@@ -103,15 +101,17 @@ export default {
   }
 
   #login .section .form .body input {
-    height: 60px;
-    background-color: unset;
-    color: #c5c5c5;
-    font-size: 18px;
+    height: 40px;
+    background-color: #222328;
+    color: #5A6872;
+    font-size: 16px;
     padding: 10px;
+    border-radius: 0;
+    border: 1px solid #2c363e;
   }
 
   #login .section .form .body input:focus {
-    border: 1px solid #F57C00;
+    border: 1px solid #f57c00;
   }
 
   #login .section .form .body input:active {
@@ -122,6 +122,11 @@ export default {
     margin-top: 10px;
     padding: 10px;
     height: 50px;
+    background: #f57c00;
+    border-radius: 0;
+    color: #fff;
+    text-align: center;
+    border: 0;
   }
 }
 
@@ -132,16 +137,14 @@ export default {
   }
 
   #login .section .form .header {
-    background-color: #1d1e20;
-    padding: 30px;
     color: #fff;
-    text-align: center;
+    text-align: left;
+    margin-bottom: 30px;
   }
 
   #login .section .form .body {
-    background-color: #000000;
-    border: 1px solid #404040;
-    padding: 10px;
+    background-color: #1b1c21;
+    padding: 50px;
   }
 
   #login label {
@@ -150,14 +153,16 @@ export default {
 
   #login .section .form .body input {
     height: 40px;
-    background-color: unset;
-    color: #c5c5c5;
-    font-size: 14px;
+    background-color: #222328;
+    color: #5A6872;
+    font-size: 16px;
     padding: 10px;
+    border-radius: 0;
+    border: 1px solid #2c363e;
   }
 
   #login .section .form .body input:focus {
-    border: 1px solid #F57C00;
+    border: 1px solid #c57c00;
   }
 
   #login .section .form .body input:active {
@@ -167,8 +172,12 @@ export default {
   #login button {
     margin-top: 10px;
     padding: 10px;
-    height: 40px;
-    font-size: 14px;
+    height: 50px;
+    background: #f57c00;
+    border-radius: 0;
+    color: #fff;
+    text-align: center;
+    border: 0;
   }
 }
 </style>

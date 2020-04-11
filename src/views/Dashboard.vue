@@ -12,12 +12,10 @@
                             <side-menu active_page="dashboard" />
                         </div>
                         <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 players">
-                            <div class="header">
-                                <span class="h2">All Tracks</span>
-                                <span class="h3">Select a track and view participants under each track</span>
-                            </div>
                             <div class="body">
-                                <div class="overflow-auto">
+                                <div class="overflow-auto p-2">
+                                    <h4>All Tracks: <small>Select a track and view participants under each track</small></h4><hr/>
+
                                     <b-table
                                         id="my-table"
                                         :items="tracks"
@@ -27,7 +25,7 @@
                                         responsive="sm"
                                     >
                                         <template v-slot:cell(details)>
-                                            <router-link to="#" size="sm" class="mr-2">View Students</router-link>
+                                            <button class="btn btn-sm btn-secondary" @click="viewPlayers(1)" type="button">View Participants</button>
                                         </template>
                                     </b-table>
                                 </div>
@@ -83,6 +81,9 @@ export default {
             finally {
                 this.loading = false;
             }
+        },
+        viewPlayers(track_id) {
+            this.$router.push(`/players/${track_id}`);
         }
     }
 }

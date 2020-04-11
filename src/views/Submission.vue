@@ -17,16 +17,16 @@
               <div class="body">
                 <form @submit.prevent="handleSubmit">
                   <div class="form-group">
-                    <label>Email</label>
+                    <label>Email <span class="req">*</span></label>
                     <input class="form-control" v-model="email" type="email" autocomplete="off" name="emailAdd" placeholder="Email address" required />
                   </div>
                   <div class="form-group">
-                    <label>Challenge Link</label>
-                    <input class="form-control" v-model="challene" type="url" autocomplete="off" name="challenge" placeholder="Ex. https://challenge.xyz...." required />
+                    <label>Challenge Link <span class="req">*</span></label>
+                    <input class="form-control" v-model="challenge" type="url" autocomplete="off" name="challenge" placeholder="Ex. https://challenge.xyz...." required />
                   </div>
                   <div class="form-group">
                     <button v-if="processing" type="button" class="form-control btn btn-lg btn-success" disabled><i class="fa fa-spinner fa-spin"></i> Opening ...</button>
-                    <button v-else type="submit" class="form-control btn btn-lg btn-success">Submit</button>
+                    <button v-else type="submit" class="form-control btn btn-lg btn-success" disabled>Submit</button>
                   </div>
                 </form>
               </div>
@@ -86,16 +86,14 @@ export default {
   }
 
   #login .section .form .header {
-    background-color: #1d1e20;
-    padding: 30px;
     color: #fff;
-    text-align: center;
+    text-align: left;
+    margin-bottom: 30px;
   }
 
   #login .section .form .body {
-    background-color: #000000;
-    border: 1px solid #404040;
-    padding: 10px;
+    background-color: #1b1c21;
+    padding: 50px;
   }
 
   #login label {
@@ -103,15 +101,17 @@ export default {
   }
 
   #login .section .form .body input {
-    height: 60px;
-    background-color: unset;
-    color: #c5c5c5;
-    font-size: 18px;
+    height: 40px;
+    background-color: #222328;
+    color: #5A6872;
+    font-size: 16px;
     padding: 10px;
+    border-radius: 0;
+    border: 1px solid #2c363e;
   }
 
   #login .section .form .body input:focus {
-    border: 1px solid #F57C00;
+    border: 1px solid #f57c00;
   }
 
   #login .section .form .body input:active {
@@ -122,6 +122,11 @@ export default {
     margin-top: 10px;
     padding: 10px;
     height: 50px;
+    background: #f57c00;
+    border-radius: 0;
+    color: #fff;
+    text-align: center;
+    border: 0;
   }
 }
 
@@ -132,16 +137,14 @@ export default {
   }
 
   #login .section .form .header {
-    background-color: #1d1e20;
-    padding: 30px;
     color: #fff;
-    text-align: center;
+    text-align: left;
+    margin-bottom: 30px;
   }
 
   #login .section .form .body {
-    background-color: #000000;
-    border: 1px solid #404040;
-    padding: 10px;
+    background-color: #1B1C21;
+    padding: 30px;
   }
 
   #login label {
@@ -150,14 +153,16 @@ export default {
 
   #login .section .form .body input {
     height: 40px;
-    background-color: unset;
-    color: #c5c5c5;
-    font-size: 14px;
+    background-color: #222328;
+    color: #5a6872;
+    font-size: 16px;
     padding: 10px;
+    border-radius: 0;
+    border: 1px solid #2c363e;
   }
 
   #login .section .form .body input:focus {
-    border: 1px solid #F57C00;
+    border: 1px solid #f57c00;
   }
 
   #login .section .form .body input:active {
@@ -167,8 +172,12 @@ export default {
   #login button {
     margin-top: 10px;
     padding: 10px;
-    height: 40px;
-    font-size: 14px;
+    height: 50px;
+    background: #f57c00;
+    border-radius: 0;
+    color: #fff;
+    text-align: center;
+    border: 0;
   }
 }
 </style>

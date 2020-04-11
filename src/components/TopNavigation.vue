@@ -16,7 +16,7 @@
                                 <span :class="current === 'submission' ? `link active` : `link`">Submission</span>
                             </router-link>
                             <router-link to="/register">
-                                <button type="button" class="btn register">Register</button>
+                                <button type="button" :class="current === 'register' ? `btn register-active` : `btn register`">Register</button>
                             </router-link>
                             <button type="button" class="btn btn-sm" v-if="this.$route.path === '/dashboard'" @click="logout">
                                 <span :class="current === 'admin' ? `link active` : `link`">Logout</span>
@@ -65,15 +65,25 @@ export default {
     #nav-collapse .active {
         text-decoration: none;
         padding: 10px;
-        color: #F57C00;
+        color: #f57c00;
     }
 
     #nav-collapse .register {
-        background-color: #F57C00;
+        background-color: #f57c00;
         padding: 10px;
         color: #fff;
         margin-left: 30px;
-        width: 150px
+        width: 150px;
+        border-radius: 0;
+    }
+
+    #nav-collapse .register-active {
+        background-color: #ffd2a5;
+        padding: 10px;
+        color: #fff;
+        margin-left: 30px;
+        width: 150px;
+        border-radius: 0;
     }
 }
 
@@ -97,16 +107,27 @@ export default {
     #nav-collapse .active {
         text-decoration: none;
         padding: 10px;
-        color: #F57C00;
+        color: #f57c00;
     }
 
     #nav-collapse .register {
-        background-color: #F57C00;
+        background-color: #f57c00;
         padding: 10px;
         color: #fff;
         display: block;
         width: 100%;
         margin-top: 20px;
+        border-radius: 0;
+    }
+
+    #nav-collapse .register-active {
+        background-color: #ffd2a5;
+        padding: 10px;
+        color: #fff;
+        border-radius: 0;
+        display: block;
+        margin-top: 20px;
+        width: 100%;
     }
 
     .toggle {

@@ -13,40 +13,70 @@
               <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
               <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 leaderboard">
                 <h4>Leaderboard</h4>
-                <b-tabs content-class="" nav-class="nav-class" active-nav-item-class="nav-class" fill>
-                  <b-tab title="Web Development" active>
-                    <div class="header">
-                      <div class="header-row">
-                        <a href="#" class="column column1">Rank</a>
-                        <a href="#" class="column column2"></a>
-                        <a href="#" class="column column3">Name</a>
-                        <a href="#" class="column column4">Score</a>
-                        <a href="#" class="column column5"></a>
-                      </div>
+                <div class="tab-menu">
+                  <a @click="handleTab('web')" :class="web_active" href="#">Web Development</a>
+                  <a @click="handleTab('ui')" :class="ui_active" href="#">UI/UX Design</a>
+                  <a @click="handleTab('tech')" :class="tech_active" href="#">Technical Writing</a>
+                </div>
+                <div class="header">
+                  <div class="header-row">
+                    <a href="#" class="column column1">Rank</a>
+                    <a href="#" class="column column2"></a>
+                    <a href="#" class="column column3">Name</a>
+                    <a href="#" class="column column4">Score</a>
+                    <a href="#" class="column column5"></a>
+                  </div>
+                </div>
+                <div class="body">
+                  <div v-show="show_web">
+                    <div v-if="web.length > 0">
+                      <player-card v-for="(player,index) of web" 
+                        :name="player.name" 
+                        :score="player.score"
+                        :image="player.image"
+                        :index="++index"
+                        :trophy="`${player.trophy}`"
+                        v-bind:key="index"
+                      />
                     </div>
-                    <div class="body">
-                      <div v-if="players.length > 0">
-                        <player-card v-for="(player,index) in players" 
-                          :name="player.name" 
-                          :score="player.score"
-                          :image="player.image"
-                          :index="++index"
-                          :trophy="`${player.trophy}`"
-                          v-bind:key="index"
-                        />
-                      </div>
-                      <div class="no-value" v-else>
-                        <span><i class="fa fa-ban"></i></span>
-                        <p style="text-align: center">There are currently no players</p>
-                        <router-link to="/register">
-                          <button type="button" class="btn btn-sm">Register</button>
-                        </router-link>
-                      </div>
+                    <div class="no-value" v-else>
+                      <span><i class="fa fa-ban"></i></span>
+                      <p style="text-align: center">There are currently no players</p>
                     </div>
-                  </b-tab>
-                  <b-tab title="UI/UX Design" class="tab-item"></b-tab>
-                  <b-tab title="Technical Writing" class="tab-item"></b-tab>
-                </b-tabs>
+                  </div>
+                  <div v-show="show_ui">
+                    <div v-if="ui.length > 0">
+                      <player-card v-for="(player,index) of ui" 
+                        :name="player.name" 
+                        :score="player.score"
+                        :image="player.image"
+                        :index="++index"
+                        :trophy="`${player.trophy}`"
+                        v-bind:key="index"
+                      />
+                    </div>
+                    <div class="no-value" v-else>
+                      <span><i class="fa fa-ban"></i></span>
+                      <p style="text-align: center">There are currently no players</p>
+                    </div>
+                  </div>
+                  <div v-show="show_tech">
+                    <div v-if="tech.length > 0">
+                      <player-card v-for="(player,index) of tech" 
+                        :name="player.name" 
+                        :score="player.score"
+                        :image="player.image"
+                        :index="++index"
+                        :trophy="`${player.trophy}`"
+                        v-bind:key="index"
+                      />
+                    </div>
+                    <div class="no-value" v-else>
+                      <span><i class="fa fa-ban"></i></span>
+                      <p style="text-align: center">There are currently no players</p>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
             </div>
@@ -68,7 +98,13 @@ export default {
   },
   data() {
     return {
-      players: [
+      show_web: false,
+      show_ui: false,
+      show_tech: false,
+      web_active: '',
+      ui_active: '',
+      tech_active: '',
+      web: [
         {
           name: 'Destiny Ajax',
           score: 12,
@@ -100,12 +136,60 @@ export default {
           trophy: ''
         }
       ],
+      ui: [
+        {
+          name: 'Destiny Ajax',
+          score: 12,
+          image: '',
+          trophy: '/images/gold.png'
+        },
+        {
+          name: 'Tito Akanbi',
+          score: 12,
+          image: '',
+          trophy: '/images/silver.png'
+        },
+        {
+          name: 'Abdul Musa',
+          score: 18,
+          image: '',
+          trophy: '/images/bronze.png'
+        },
+        {
+          name: 'John Doe',
+          score: 12,
+          image: '',
+          trophy: ''
+        }
+      ],
+      tech: [
+        {
+          name: 'Destiny Ajax',
+          score: 12,
+          image: '',
+          trophy: '/images/gold.png'
+        },
+        {
+          name: 'Tito Akanbi',
+          score: 12,
+          image: '',
+          trophy: '/images/silver.png'
+        },
+        {
+          name: 'Abdul Musa',
+          score: 18,
+          image: '',
+          trophy: '/images/bronze.png'
+        }
+      ],
       loading: false,
       error: null
     }
   },
   created() {
     //this.fetchData();
+    this.show_web = true;
+    this.web_active = 'active';
   },
   watch: {
     '$route': 'fetchData'
@@ -135,6 +219,36 @@ export default {
       finally {
         this.loading = false;
       }
+    },
+    handleTab(type) {
+      switch (type) {
+        case 'web':
+          this.web_active = 'active';
+          this.show_web = true;
+          this.ui_active = '';
+          this.show_ui = false;
+          this.tech_active = '';
+          this.show_tech = false;
+          break;
+        case 'ui':
+          this.web_active = '';
+          this.show_web = false;
+          this.ui_active = 'active';
+          this.show_ui = true;
+          this.tech_active = '';
+          this.show_tech = false;
+          break;
+        case 'tech':
+          this.web_active = '';
+          this.show_web = false;
+          this.ui_active = '';
+          this.show_ui = false;
+          this.tech_active = 'active';
+          this.show_tech = true;
+          break;
+        default:
+          break;
+      }
     }
   }
 };
@@ -152,9 +266,28 @@ export default {
   text-align: left;
 } 
 
-.nav-class {
+.tab-menu {
   background-color: #1b1c21;
   color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.tab-menu a {
+  display: inline-block;
+  color: #e5e5e5;
+  padding: 10px 30px 10px 30px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.tab-menu a:hover {
+  background-color: #f57c00;
+}
+
+.active {
+  background-color: #f57c00;
 }
 
 .active-tab {
@@ -177,6 +310,7 @@ export default {
   justify-items: center;
   border-radius: 5px;
   margin-bottom: 10px;
+  font-size: 14px;
 }
 
 #leader .section .leaderboard .header .header-row .column {
@@ -269,6 +403,30 @@ export default {
 
 #leader .section .leaderboard .header h4 {
   font-size: 30px;
+}
+
+.tab-menu {
+  background-color: #1b1c21;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.tab-menu a {
+  display: inline-block;
+  color: #e5e5e5;
+  padding: 10px 30px 10px 30px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.tab-menu a:hover {
+  background-color: #f57c00;
+}
+
+.active {
+  background-color: #f57c00;
 }
 
 #leader .section .leaderboard .header .header-row {

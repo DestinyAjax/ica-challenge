@@ -12,13 +12,17 @@
                         <side-menu active_page="challenges" />
                     </div>
                     <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 players">
-                        <div class="header">
-                            <span class="h2">All Tracks</span>
-                            <span class="h3">Select a track and view participants under each track</span>
-                            <button class="btn btn-sm btn-primary" type="button" v-b-modal.modal-1>Create Challenge</button>
-                        </div>
                         <div class="body">
-                            <div class="overflow-auto">
+                            <div class="overflow-auto p-2">
+                                <div class="row">
+                                    <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12">
+                                        <h4>All Challenge Days: <small>Showing list of all challenge days</small></h4>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                        <button class="btn btn-sm btn-primary pull-right" type="button" v-b-modal.modal-1>Create Challenge</button>
+                                    </div>
+                                </div><hr/>
+
                                 <b-table
                                     v-if="challenges.length > 0"
                                     id="my-table"
@@ -28,12 +32,12 @@
                                     striped 
                                     responsive="sm"
                                 >
-                                    <template v-slot:cell(status)>
-                                        <span class="badge badge-success" v-if="status === true">Active</span>
+                                    <template v-slot:cell(status)="data">
+                                        <span class="badge badge-success" v-if="data.item.status === true">Active</span>
                                         <span class="badge badge-danger" v-else>Not Active</span>
                                     </template>
                                     <template v-slot:cell(action)>
-                                        <router-link to="#" size="sm" class="mr-2">Edit</router-link>
+                                        <button class="btn btn-sm btn-secondary" type="button">Edit</button>
                                     </template>
                                 </b-table>
                                 <p class="text-center" v-else>There are challenges</p>

@@ -9,18 +9,16 @@
                     </div>
                     <div class="row" v-else>
                         <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
-                            <side-menu></side-menu>
+                            <side-menu active_page="dashboard" is_track />
                         </div>
                         <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 players">
-                            <div class="header">
-                                <span class="h2">All Tracks</span>
-                                <span class="h3">Select a track and view participants under each track</span>
-                            </div>
                             <div class="body">
-                                <div class="overflow-auto">
+                                <div class="overflow-auto p-2">
+                                    <h4>Participants: <small>Showing list of participants under a track</small></h4><hr/>
+                                    
                                     <b-table
                                         id="my-table"
-                                        :items="items"
+                                        :items="players"
                                         :per-page="perPage"
                                         :current-page="currentPage"
                                         small
@@ -55,7 +53,6 @@
 import TopNavigation from "@/components/TopNavigation";
 import SideMenu from "@/components/SideMenu";
 import { allTracks } from "@/services/TrackService";
-import { playersCollection } from "../firebase";
 
 export default {
     name: "dashboard",
@@ -69,17 +66,16 @@ export default {
             currentPage: 1,
             loading: false,
             error: null,
-            items: [],
-            tracks: []
+            players: [],
         }
     },
     computed: {
       rows() {
-        return this.items.length
+        return this.players.length
       }
     },
     created() {
-        this.fetchData();
+        // this.fetchData();
     },
     methods: {
         async fetchData() {

@@ -294,7 +294,7 @@ export default {
         background: #F57C00;
         border-radius: 0;
         color: #fff;
-        text-align: left;
+        text-align: center;
         border: 0;
     }
 

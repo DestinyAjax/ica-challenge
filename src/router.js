@@ -8,6 +8,7 @@ const Register = () => import("@/views/Register");
 const Login = () => import("@/views/Login");
 const Submission = () => import("@/views/Submission");
 const Challenge = () => import("@/views/Challenges");
+const Players = () => import("@/views/Players");
 
 Vue.use(Router);
 
@@ -35,6 +36,14 @@ const router = new Router({
             path: "/challenges",
             name: "Challenge",
             component: Challenge,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/players/:track_id",
+            name: "Players",
+            component: Players,
             meta: {
                 requiresAuth: true
             }

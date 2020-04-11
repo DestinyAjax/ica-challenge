@@ -10,9 +10,9 @@
         <router-link to="/submissions" v-show="is_track">
             <b-list-group-item>Submissions</b-list-group-item>
         </router-link>
-        <router-link to="/settings">
+        <!-- <router-link to="/settings">
             <b-list-group-item>Settings</b-list-group-item>
-        </router-link>
+        </router-link> -->
         <router-link @click="logout" to="#">
             <b-list-group-item>Logout</b-list-group-item>
         </router-link>
