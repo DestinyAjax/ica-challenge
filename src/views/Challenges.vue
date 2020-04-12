@@ -4,43 +4,45 @@
         <div class="section">
             <b-container>
                 <div v-if="error" class="alert alert-danger">{{ error }}</div>
-                <div v-if="loading" class="text-center">
-                    <img src="../assets/images/loader.png" />
-                </div>
-                <div class="row" v-else>
+                <div class="row">
                     <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
                         <side-menu active_page="challenges" />
                     </div>
                     <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 players">
                         <div class="body">
                             <div class="overflow-auto p-2">
-                                <div class="row">
-                                    <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12">
-                                        <h4>All Challenge Days: <small>Showing list of all challenge days</small></h4>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
-                                        <button class="btn btn-sm btn-primary pull-right" type="button" v-b-modal.modal-1>Create Challenge</button>
-                                    </div>
-                                </div><hr/>
+                                <div v-if="loading" class="text-center">
+                                    <i class="fa fa-spinner fa-spin"></i> loading...
+                                </div>
+                                <div v-else>
+                                    <div class="row">
+                                        <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12">
+                                            <h4>All Challenge Days: <small>Showing list of all challenge days</small></h4>
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                            <button class="btn btn-sm btn-primary pull-right" type="button" v-b-modal.modal-1>Create Challenge</button>
+                                        </div>
+                                    </div><hr/>
 
-                                <b-table
-                                    v-if="challenges.length > 0"
-                                    id="my-table"
-                                    :items="challenges"
-                                    small
-                                    class="custom-table"
-                                    striped 
-                                    responsive="sm"
-                                >
-                                    <template v-slot:cell(status)="data">
-                                        <span class="badge badge-success" v-if="data.item.status === true">Active</span>
-                                        <span class="badge badge-danger" v-else>Not Active</span>
-                                    </template>
-                                    <template v-slot:cell(action)>
-                                        <button class="btn btn-sm btn-secondary" type="button">Edit</button>
-                                    </template>
-                                </b-table>
-                                <p class="text-center" v-else>There are challenges</p>
+                                    <b-table
+                                        v-if="challenges.length > 0"
+                                        id="my-table"
+                                        :items="challenges"
+                                        small
+                                        class="custom-table"
+                                        striped 
+                                        responsive="sm"
+                                    >
+                                        <template v-slot:cell(status)="data">
+                                            <span class="badge badge-success" v-if="data.item.status === true">Active</span>
+                                            <span class="badge badge-danger" v-else>Not Active</span>
+                                        </template>
+                                        <template v-slot:cell(action)>
+                                            <button class="btn btn-sm btn-secondary" type="button">Edit</button>
+                                        </template>
+                                    </b-table>
+                                    <p class="text-center" v-else>There are challenges</p>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -22,11 +22,11 @@
                   </div>
                   <div class="form-group">
                     <label>Challenge Link <span class="req">*</span></label>
-                    <input class="form-control" v-model="challenge" type="url" autocomplete="off" name="challenge" placeholder="Ex. https://challenge.xyz...." required />
+                    <input class="form-control" v-model="submission_link" type="url" autocomplete="off" name="challenge" placeholder="Ex. https://challenge.xyz...." required />
                   </div>
                   <div class="form-group">
                     <button v-if="processing" type="button" class="form-control btn btn-lg btn-success" disabled><i class="fa fa-spinner fa-spin"></i> Opening ...</button>
-                    <button v-else type="submit" class="form-control btn btn-lg btn-success" disabled>Submit</button>
+                    <button v-else type="submit" class="form-control btn btn-lg btn-success">Submit</button>
                   </div>
                 </form>
               </div>
@@ -41,17 +41,17 @@
 
 <script>
 import TopNavigation from "@/components/TopNavigation";
-import { auth } from "../firebase";
+import { create } from "@/services/SubmissionService";
 
 export default {
-  name: "login",
+  name: "submission",
   components: {
     TopNavigation
   },
   data() {
     return {
       email: '',
-      challenge: '',
+      submission_link: '',
       processing: false,
       buttonActive: true,
       error: null
@@ -62,13 +62,22 @@ export default {
       e.preventDefault();
       this.processing = true;
       try {
-        const user = await auth.signInWithEmailAndPassword(this.email, this.password);
-        if (user) {
-          this.$router.replace("dashboard");
-        }
+        await create({
+          email: this.email,
+          submission_link: this.submission_link
+        });
+
+        this.$swal('Submitted Successfully!','Your challenge solution has been received','success');
+        window.location.reload();
       }
-      catch (err) {
-        this.error = err.message;
+      catch ({response}) {
+        const {error, message} = response.data;
+        if (error) {
+          this.error = message;
+        }
+        else {
+          this.error = "Something went wrong";
+        }
       }
       finally {
         this.processing = false;

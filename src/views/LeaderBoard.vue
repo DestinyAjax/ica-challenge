@@ -29,8 +29,8 @@
                 </div>
                 <div class="body">
                   <div v-show="show_web">
-                    <div v-if="web.length > 0">
-                      <player-card v-for="(player,index) of web" 
+                    <div v-if="webArr.length > 0">
+                      <player-card v-for="(player,index) of webArr" 
                         :name="player.name" 
                         :score="player.score"
                         :image="player.image"
@@ -45,8 +45,8 @@
                     </div>
                   </div>
                   <div v-show="show_ui">
-                    <div v-if="ui.length > 0">
-                      <player-card v-for="(player,index) of ui" 
+                    <div v-if="uiArr.length > 0">
+                      <player-card v-for="(player,index) of uiArr" 
                         :name="player.name" 
                         :score="player.score"
                         :image="player.image"
@@ -61,8 +61,8 @@
                     </div>
                   </div>
                   <div v-show="show_tech">
-                    <div v-if="tech.length > 0">
-                      <player-card v-for="(player,index) of tech" 
+                    <div v-if="techArr.length > 0">
+                      <player-card v-for="(player,index) of techArr" 
                         :name="player.name" 
                         :score="player.score"
                         :image="player.image"
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { playersCollection } from "../firebase";
+import { allSubmissions, allTracks } from "@/services/TrackService";
 import TopNavigation from "@/components/TopNavigation";
 import PlayerCard from "@/components/PlayerCard";
 
@@ -104,90 +104,15 @@ export default {
       web_active: '',
       ui_active: '',
       tech_active: '',
-      web: [
-        {
-          name: 'Destiny Ajax',
-          score: 12,
-          image: '',
-          trophy: '/images/gold.png'
-        },
-        {
-          name: 'Tito Akanbi',
-          score: 12,
-          image: '',
-          trophy: '/images/silver.png'
-        },
-        {
-          name: 'Abdul Musa',
-          score: 18,
-          image: '',
-          trophy: '/images/bronze.png'
-        },
-        {
-          name: 'John Doe',
-          score: 12,
-          image: '',
-          trophy: ''
-        },
-        {
-          name: 'Adeniran Opeyemi',
-          score: 12,
-          image: '',
-          trophy: ''
-        }
-      ],
-      ui: [
-        {
-          name: 'Destiny Ajax',
-          score: 12,
-          image: '',
-          trophy: '/images/gold.png'
-        },
-        {
-          name: 'Tito Akanbi',
-          score: 12,
-          image: '',
-          trophy: '/images/silver.png'
-        },
-        {
-          name: 'Abdul Musa',
-          score: 18,
-          image: '',
-          trophy: '/images/bronze.png'
-        },
-        {
-          name: 'John Doe',
-          score: 12,
-          image: '',
-          trophy: ''
-        }
-      ],
-      tech: [
-        {
-          name: 'Destiny Ajax',
-          score: 12,
-          image: '',
-          trophy: '/images/gold.png'
-        },
-        {
-          name: 'Tito Akanbi',
-          score: 12,
-          image: '',
-          trophy: '/images/silver.png'
-        },
-        {
-          name: 'Abdul Musa',
-          score: 18,
-          image: '',
-          trophy: '/images/bronze.png'
-        }
-      ],
       loading: false,
+      webArr: [],
+      uiArr: [],
+      techArr: [],
       error: null
     }
   },
   created() {
-    //this.fetchData();
+    this.fetchData();
     this.show_web = true;
     this.web_active = 'active';
   },
@@ -198,20 +123,37 @@ export default {
     async fetchData() {
       try {
         this.loading = true;
-        const result = await playersCollection.get();
-        if (result.docs.length > 0) {
-          this.players = [];
-          result.docs.map(doc => {
-            if (doc.data().name !== "") {
-              this.players.push({
-                key: doc.id,
-                name: doc.data().name,
-                image: doc.data().image_url,
-                score: doc.data().score
-              });
-            }
+        const {data} = await allTracks();
+        const web = data.data.filter(record => record.name === 'Web Development');
+        const ui = data.data.filter(record => record.name === 'UI/UX Design');
+        const tech = data.data.filter(record => record.name === 'Technical Writing');
+        const web_sub = await allSubmissions(web[0].id);
+        const ui_sub = await allSubmissions(ui[0].id);
+        const tech_sub = await allSubmissions(tech[0].id);
+        web_sub.data.data.map(data => {
+          this.webArr.push({
+            name: data.player_name,
+            image: data.image_url,
+            score: data.score,
+            trophy: ''
+          })
+        });
+        ui_sub.data.data.map(data => {
+          this.uiArr.push({
+            name: data.player_name,
+            image: data.image_url,
+            score: data.score,
+            trophy: ''
           });
-        }
+        });
+        tech_sub.data.data.map(data => {
+          this.techArr.push({
+            name: data.player_name,
+            image: data.image_url,
+            score: data.score,
+            trophy: ''
+          });
+        });
       }
       catch (err) {
         this.error = err.toString();
@@ -369,13 +311,15 @@ export default {
   padding: 20px;
 }
 
-#leader .no-value p {
-  font-size: 16px;
-}
+  #leader .no-value p {
+    font-size: 16px;
+    color: #fff;
+  }
 
-#leader .no-value span {
-  font-size: 50px;
-}
+  #leader .no-value span {
+    font-size: 50px;
+    color: #fff;
+  }
 
 #leader .no-value button {
   border: 1px solid #2c3e50;

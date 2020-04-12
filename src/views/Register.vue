@@ -6,6 +6,9 @@
                 <div class="row">
                     <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
                     <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 form">
+                        <div v-if="error" style="margn-bottom: 10px" class="alert alert-danger">
+                            {{ error }}
+                        </div>
                         <div class="header">
                             <span class="h2">Register</span>
                             <p>Fill the form below to participate in the #7days code challenge</p>
@@ -86,7 +89,8 @@ export default {
       solution_url: '',
       tracks: [],
       processing: false,
-      buttonActive: true
+      buttonActive: true,
+      error: null
     }
   },
   created() {
@@ -106,11 +110,18 @@ export default {
                 image_url: this.image_url,
                 track_id: this.track,
             });
-            this.$swal('Created Successfully!','Your profile has been successfully created','success');
+
+            this.$swal('Created Successfully!','Your profile has been created','success');
             window.location.reload();
         }
         catch({response: {data}}) {
-            this.$swal('Something went wrong',`${data.message}`,'error');
+            const {error, message} = data;
+            if (error) {
+                this.error = message;
+            }
+            else {
+                this.error = "Something went wrong";
+            }
         }
         finally {
             this.processing = false;

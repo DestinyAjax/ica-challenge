@@ -4,42 +4,44 @@
             <div class="section">
                 <b-container>
                     <div v-if="error" class="alert alert-danger">{{ error }}</div>
-                    <div v-if="loading" class="text-center">
-                        <img src="../assets/images/loader.png" />
-                    </div>
-                    <div class="row" v-else>
+                    <div class="row">
                         <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
                             <side-menu active_page="dashboard" is_track />
                         </div>
                         <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 players">
                             <div class="body">
                                 <div class="overflow-auto p-2">
-                                    <h4>Participants: <small>Showing list of participants under a track</small></h4><hr/>
-                                    
-                                    <b-table
-                                        id="my-table"
-                                        :items="players"
-                                        :per-page="perPage"
-                                        :current-page="currentPage"
-                                        small
-                                        class="custom-table"
-                                        striped 
-                                        responsive="sm"
-                                    >
-                                        <template v-slot:cell(details)>
-                                            <router-link to="#" size="sm" class="mr-2">View Details</router-link>
-                                        </template>
-                                    </b-table>
-                                    <b-pagination
-                                        v-model="currentPage"
-                                        :total-rows="rows"
-                                        :per-page="perPage"
-                                        aria-controls="my-table"
-                                        pills
-                                        align="center"
-                                    ></b-pagination>
+                                    <div v-if="loading" class="text-center">
+                                        <i class="fa fa-spinner fa-spin"></i> loading...
+                                    </div>
+                                    <div v-else>
+                                        <h4>Participants: <small>Showing list of participants under a track</small></h4><hr/>
+                                        <p v-if="players.length < 1" class="text-center">There are no participants yet</p>
+                                        <b-table
+                                            id="my-table"
+                                            :items="players"
+                                            :per-page="perPage"
+                                            :current-page="currentPage"
+                                            small
+                                            class="custom-table"
+                                            striped 
+                                            responsive="sm"
+                                        >
+                                            <template v-slot:cell(details)>
+                                                <router-link to="#" size="sm" class="mr-2">View Details</router-link>
+                                            </template>
+                                        </b-table>
+                                        <b-pagination
+                                            v-model="currentPage"
+                                            :total-rows="rows"
+                                            :per-page="perPage"
+                                            aria-controls="my-table"
+                                            pills
+                                            align="center"
+                                        ></b-pagination>
 
-                                    <p class="mt-3">Current Page: {{ currentPage }}</p>
+                                        <p class="mt-3">Current Page: {{ currentPage }}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +54,7 @@
 <script>
 import TopNavigation from "@/components/TopNavigation";
 import SideMenu from "@/components/SideMenu";
-import { allTracks } from "@/services/TrackService";
+import { allPlayers } from "@/services/TrackService";
 
 export default {
     name: "dashboard",
@@ -75,17 +77,23 @@ export default {
       }
     },
     created() {
-        // this.fetchData();
+        this.fetchData();
     },
     methods: {
         async fetchData() {
             this.loading = true;
             try {
-                this.tracks = [];
-                const {data} = await allTracks();
-                if (data.data.length > 0) {
-                    this.tracks = data.data;
-                }
+                const track_id = this.$route.params.track_id;
+                const {data} = await allPlayers(track_id);
+                data.data.map((data,index) => {
+                    this.players.push({
+                        SN: ++index,
+                        name: data.name,
+                        email: data.email,
+                        telephone: data.telephone,
+                        school: data.school
+                    });
+                });
             }
             catch (err) {
                 this.error = err.message;

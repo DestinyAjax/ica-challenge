@@ -4,30 +4,32 @@
             <div class="section">
                 <b-container>
                     <div v-if="error" class="alert alert-danger">{{ error }}</div>
-                    <div v-if="loading" class="text-center">
-                        <img src="../assets/images/loader.png" />
-                    </div>
-                    <div class="row" v-else>
+                    <div class="row">
                         <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
                             <side-menu active_page="dashboard" />
                         </div>
                         <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 players">
                             <div class="body">
-                                <div class="overflow-auto p-2">
-                                    <h4>All Tracks: <small>Select a track and view participants under each track</small></h4><hr/>
+                                <div v-if="loading" class="text-center">
+                                    <i class="fa fa-spinner fa-spin"></i> loading...
+                                </div>
+                                <div v-else>
+                                    <div class="overflow-auto p-2">
+                                        <h4>All Tracks: <small>Select a track and view participants under each track</small></h4><hr/>
 
-                                    <b-table
-                                        id="my-table"
-                                        :items="tracks"
-                                        small
-                                        class="custom-table"
-                                        striped 
-                                        responsive="sm"
-                                    >
-                                        <template v-slot:cell(details)>
-                                            <button class="btn btn-sm btn-secondary" @click="viewPlayers(1)" type="button">View Participants</button>
-                                        </template>
-                                    </b-table>
+                                        <b-table
+                                            id="my-table"
+                                            :items="tracks"
+                                            small
+                                            class="custom-table"
+                                            striped 
+                                            responsive="sm"
+                                        >
+                                            <template v-slot:cell(track_id)="data">
+                                                <button class="btn btn-sm btn-secondary" @click="viewPlayers(data.item.track_id)" type="button">Manage</button>
+                                            </template>
+                                        </b-table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +72,7 @@ export default {
                             id: ++index,
                             name: record.name,
                             description: record.description,
-                            details: ''
+                            track_id: record.id
                         });
                     });
                 }
@@ -82,8 +84,8 @@ export default {
                 this.loading = false;
             }
         },
-        viewPlayers(track_id) {
-            this.$router.push(`/players/${track_id}`);
+        viewPlayers(id) {
+            this.$router.push(`/players/${id}`);
         }
     }
 }
