@@ -30,8 +30,8 @@
                                             <template v-slot:cell(submission_link)="data">
                                                 <a :href="data.item.submission_link" target="_blank">{{data.item.submission_link}}</a>
                                             </template>
-                                            <template v-slot:cell(action)>
-                                                <router-link to="#" size="sm" class="mr-2">Update</router-link>
+                                            <template v-slot:cell(id)="data">
+                                                <button type="button" class="btn btn-sm btn-secondary" @click="viewDetails(data.item.id)">Update</button>
                                             </template>
                                         </b-table>
                                         <b-pagination
@@ -94,7 +94,7 @@ export default {
                         name: data.player_name,
                         submission_link: data.submission_link,
                         score: data.score,
-                        action: ''
+                        id: data.id
                     });
                 });
             }
@@ -104,6 +104,9 @@ export default {
             finally {
                 this.loading = false;
             }
+        },
+        viewDetails(id) {
+            this.$router.push(`/submission-details/${id}`);
         }
     }
 }

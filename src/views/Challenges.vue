@@ -37,11 +37,11 @@
                                             <span class="badge badge-success" v-if="data.item.status === true">Active</span>
                                             <span class="badge badge-danger" v-else>Not Active</span>
                                         </template>
-                                        <template v-slot:cell(action)>
-                                            <button class="btn btn-sm btn-secondary" type="button">Edit</button>
+                                        <template v-slot:cell(challenge_id)="data">
+                                            <button @click="viewUpdate(data.item.challenge_id)" class="btn btn-sm btn-secondary" type="button">Edit</button>
                                         </template>
                                     </b-table>
-                                    <p class="text-center" v-else>There are challenges</p>
+                                    <p class="text-center" v-else>There are no challenges</p>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,7 @@ export default {
                             title: record.title,
                             date: record.date,
                             status: record.status,
-                            action: ''
+                            challenge_id: record.id
                         });
                     });
                 }
@@ -137,6 +137,9 @@ export default {
             finally {
                 this.submitting = false;
             }
+        },
+        viewUpdate(id) {
+            this.$router.push(`/challenge/${id}`);
         }
     }
 }
