@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { allSubmissions, allTracks } from "@/services/TrackService";
+import { byTrack } from "@/services/SubmissionService";
 import TopNavigation from "@/components/TopNavigation";
 import PlayerCard from "@/components/PlayerCard";
 
@@ -123,35 +123,35 @@ export default {
     async fetchData() {
       try {
         this.loading = true;
-        const {data} = await allTracks();
-        const web = data.data.filter(record => record.name === 'Web Development');
-        const ui = data.data.filter(record => record.name === 'UI/UX Design');
-        const tech = data.data.filter(record => record.name === 'Technical Writing');
-        const web_sub = await allSubmissions(web[0].id);
-        const ui_sub = await allSubmissions(ui[0].id);
-        const tech_sub = await allSubmissions(tech[0].id);
-        web_sub.data.data.map(data => {
+        const webData = await byTrack(1);
+        const uiData = await byTrack(11);
+        const techData = await byTrack(21);
+
+        webData.data.data.map((data,index) => {
+          const trophy = this.computeTrophy(index,data.score);
           this.webArr.push({
             name: data.player_name,
             image: data.image_url,
             score: data.score,
-            trophy: ''
+            trophy: trophy
           })
         });
-        ui_sub.data.data.map(data => {
+        uiData.data.data.map((data,index) => {
+          const trophy = this.computeTrophy(index,data.score);
           this.uiArr.push({
             name: data.player_name,
             image: data.image_url,
             score: data.score,
-            trophy: ''
+            trophy: trophy
           });
         });
-        tech_sub.data.data.map(data => {
+        techData.data.data.map((data,index) => {
+          const trophy = this.computeTrophy(index,data.score);
           this.techArr.push({
             name: data.player_name,
             image: data.image_url,
             score: data.score,
-            trophy: ''
+            trophy: trophy
           });
         });
       }
@@ -161,6 +161,19 @@ export default {
       finally {
         this.loading = false;
       }
+    },
+    computeTrophy(index,score) {
+      let trophy = '';
+      if (index === 0 && score > 0) {
+        trophy = '/images/gold.png'
+      }
+      else if (index === 1 && score > 0) {
+        trophy = '/images/silver.png'
+      }
+      else if (index === 2 && score > 0) {
+        trophy = '/images/bronze.png'
+      }
+      return trophy;
     },
     handleTab(type) {
       switch (type) {
