@@ -28,7 +28,7 @@
                                     <input min="11" max="11" v-model="telephone" class="form-control" type="text" name="phone" autocomplete="off" placeholder="Enter your phone number ..." required />
                                 </div>
                                 <div class="form-group">
-                                    <label>School <span class="req">*</span></label>
+                                    <label>School/Country <span class="req">*</span></label>
                                     <input class="form-control" v-model="school" type="text" name="school" autocomplete="off" placeholder="Tell us the name of your school ..." required />
                                 </div>
                                 <div class="form-group">

@@ -25,6 +25,10 @@
                                                 <input type="date" class="form-control" v-model="date" />
                                             </div>
                                             <div class="form-group">
+                                                <labal>Submission Link</labal>
+                                                <input type="text" class="form-control" v-model="submission_link" />
+                                            </div>
+                                            <div class="form-group">
                                                 <b-form-group label="Status">
                                                     <b-form-radio v-model="status" name="some-radios" :value="true">Activate</b-form-radio>
                                                     <b-form-radio v-model="status" name="some-radios" :value="false">Deactivate</b-form-radio>
@@ -62,6 +66,7 @@ export default {
         return {
             title: '',
             date: '',
+            submission_link: '',
             status: false,
             loading: false,
             processing: false,
@@ -81,6 +86,7 @@ export default {
                 this.title = data.data.title;
                 this.date = data.data.date;
                 this.status = data.data.status;
+                this.submission_link = data.data.submission_link
             }
             catch (err) {
                 this.error = err.message;
@@ -96,7 +102,8 @@ export default {
                 await update(challenge_id, {
                     date: this.date,
                     title: this.title,
-                    status: this.status
+                    status: this.status,
+                    submission_link: this.submission_link
                 });
 
                 this.$swal('Updated successfully', 'This challenge has been updated successfully', 'success');
