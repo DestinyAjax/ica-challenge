@@ -22,7 +22,7 @@
                   </div>
                   <div class="form-group">
                     <label>Challenge Link <span class="req">*</span></label>
-                    <input class="form-control" v-model="submission_link" type="url" autocomplete="off" name="challenge" placeholder="Ex. https://challenge.xyz...." required />
+                    <input class="form-control" v-model="submission_link" type="text" autocomplete="off" name="challenge" placeholder="Ex. https://challenge.xyz...." required />
                   </div>
                   <div class="form-group">
                     <button v-if="processing" type="button" class="form-control btn btn-lg btn-success" disabled><i class="fa fa-spinner fa-spin"></i> Opening ...</button>
