@@ -1,19 +1,23 @@
 <template>
     <div id="leader">
-      <top-navigation current="leaderboard"></top-navigation>
+      <top-navigation></top-navigation>
         <div class="section">
           <div class="container">
             <div v-if="error" class="alert alert-danger">
               {{ error }}
             </div>
             <div v-if="loading" class="text-center">
-                <img src="../assets/images/loader.png" />
-              </div>
+              <img src="../assets/images/loader.png" />
+            </div>
             <div class="row" v-else>
               <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
               <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 leaderboard">
-                <div v-if="active" class="info">
+                <div v-if="active" class="info text-center">
                   <h1>{{active.title}}</h1>
+                  <button class="btn btn-sm btn-secondary text-center" 
+                    v-show="counter >= 1" 
+                    @click="previousChallenge" 
+                    type="button">Previous Day Challenge</button>
                 </div>
                 <h4>Leaderboard</h4>
                 <div class="tab-menu">
@@ -89,12 +93,13 @@
 </template>
 
 <script>
-import { byTrack } from "@/services/SubmissionService";
+import { previous } from "@/services/SubmissionService";
+import { all } from "@/services/ChallengeService";
 import TopNavigation from "@/components/TopNavigation";
 import PlayerCard from "@/components/PlayerCard";
 
 export default {
-  name: "leaderboard",
+  name: "previouschallenge",
   components: {
     TopNavigation,
     PlayerCard
@@ -112,11 +117,16 @@ export default {
       uiArr: [],
       techArr: [],
       error: null,
-      active: null
+      active: null,
+      counter: 0,
+      initial_date: null
     }
   },
   created() {
-    this.fetchData();
+    this.initial_date = this.$route.params.date;
+    const date = this.$route.params.date;
+    this.getAll()
+    this.fetchData(date);
     this.show_web = true;
     this.web_active = 'active';
   },
@@ -124,12 +134,28 @@ export default {
     '$route': 'fetchData'
   },
   methods: {
-    async fetchData() {
+    async getAll() {
+      const {data} = await all();
+      this.counter = data.data.length - 2;
+    },
+    previousChallenge() {
+      this.webArr = [];
+      this.uiArr = [];
+      this.techArr = [];
+      let data = this.initial_date.split('-');
+      const day = parseInt(data[2]) - 1;
+      const month = parseInt(data[1]);
+      const previous_date = `${data[0]}-${month <= 9 ? `0${month}` : month}-${day}`;
+      this.initial_date = previous_date;
+      this.fetchData(previous_date);
+      this.counter--;
+    },
+    async fetchData(date) {
       try {
         this.loading = true;
-        const webData = await byTrack(1);
-        const uiData = await byTrack(11);
-        const techData = await byTrack(21);
+        const webData = await previous(1, date);
+        const uiData = await previous(11, date);
+        const techData = await previous(21, date);
         this.active = webData.data.challenge;
 
         webData.data.data.map((data,index) => {

@@ -12,6 +12,7 @@ const Players = () => import("@/views/Players");
 const Submissions = () => import("@/views/TrackSubmission");
 const SubmissionDetails = () => import("@/views/SubmissionDetails");
 const ChallengeDetails = () => import("@/views/ChallengeDetails");
+const PreviousChallenge = () => import("@/views/PreviousChallenge");
 
 Vue.use(Router);
 
@@ -50,6 +51,11 @@ const router = new Router({
             meta: {
                 requiresAuth: true
             }
+        },
+        {
+            path: "/previous/:date",
+            name: "PreviousChallenge",
+            component: PreviousChallenge
         },
         {
             path: "/players/:track_id",

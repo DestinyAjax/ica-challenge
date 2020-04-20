@@ -12,8 +12,12 @@
             <div class="row" v-else>
               <div class="col-md-2 col-lg-2 col-sm-12 col-xs-12"></div>
               <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 leaderboard">
-                <div v-if="active" class="info">
+                <div v-if="active !== null" class="info text-center">
                   <h1>{{active.title}}</h1>
+                  <button 
+                    class="btn btn-sm btn-secondary" 
+                    @click="previousChallenge" 
+                    type="button"><i class="fa fa-arrow-left"></i> Previous Day Challenge</button>
                 </div>
                 <h4>Leaderboard</h4>
                 <div class="tab-menu">
@@ -124,6 +128,14 @@ export default {
     '$route': 'fetchData'
   },
   methods: {
+    previousChallenge() {
+      let data = this.active.date.split('-');
+      const day = parseInt(data[2]) - 1;
+      const month = parseInt(data[1]);
+      const previous_date = `${data[0]}-${month <= 9 ? `0${month}` : month}-${day}`;
+      console.log(previous_date)
+      this.$router.push(`/previous/${previous_date}`);
+    },
     async fetchData() {
       try {
         this.loading = true;
@@ -233,6 +245,12 @@ export default {
 .info h1 {
   color: #fff;
   text-align: center;
+}
+
+.btnWrapper {
+  display: flex;
+  flex-direction:row;
+  align-items: center;
 }
 
 .tab-menu {
